@@ -1,4 +1,5 @@
 using CoursesApi.Adapters;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,19 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    app.UseSwagger(opts =>
+    {
+        opts.PreSerializeFilters.Add((swagger, httpReq) =>
+    {
+        if (httpReq.Headers.ContainsKey("X-Forwarded-Host"))
+        {
+
+            var basePath = "api/references/courses";
+            var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{basePath}";
+            swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
+        }
+    });
+    });
     app.UseSwaggerUI();
 }
 
