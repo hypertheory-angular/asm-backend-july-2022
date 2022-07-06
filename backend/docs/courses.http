@@ -2,3 +2,15 @@
 
 GET http://localhost:1337/api/references/courses HTTP/1.1
 Accept: application/json
+
+
+### Add A Course
+POST http://localhost:1337/api/references/courses HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "Underwater Basket Weaving LEVEL 1",
+    "description": "Basket weaving Advanced - Moist",
+    "numberOfDays": 3
+}
